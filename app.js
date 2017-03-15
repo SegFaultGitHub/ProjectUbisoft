@@ -20,14 +20,14 @@ db.serialize(function () {
         "score INT NOT NULL)");
 
     var values = [
-        { name: "Thomas", country: "Réunion", score: 900 },
-        { name: "Thomas", country: "Réunion", score: 1300 },
-        { name: "Maxime", country: "France", score: 1300 },
-        { name: "Maxime", country: "France", score: 800},
-        { name: "Alex", country: "Laos", score: 300 },
-        { name: "Alex", country: "Laos", score: 1000 },
-        { name: "Roman", country: "France", score: 750 },
-        { name: "Roman", country: "France", score: 900 }
+        // { name: "Thomas", country: "Réunion", score: 900 },
+        // { name: "Thomas", country: "Réunion", score: 1300 },
+        // { name: "Maxime", country: "France", score: 1300 },
+        // { name: "Maxime", country: "France", score: 800},
+        // { name: "Alex", country: "Laos", score: 300 },
+        // { name: "Alex", country: "Laos", score: 1000 },
+        // { name: "Roman", country: "France", score: 750 },
+        // { name: "Roman", country: "France", score: 900 }
     ];
 
     var query = db.prepare("INSERT INTO leaderboard (name, country, score) VALUES (?, ?, ?)");
