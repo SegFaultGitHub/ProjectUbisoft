@@ -3,22 +3,166 @@
 <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/vue.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script type="text/javascript">
-        var initialize = function () {
-            $.getJson("http://localhost:3000/leaderboard/all", function (data) {
-                data.forEach(function (elt) {
-                    alert(elt);
-                    document.getElementById("leaderboard").innerText += elt;
-                });
-            });
-        }
 
-        window.onload = initialize;
     </script>
 </head>
 <body>
 <h1><%= title %></h1>
-<div id="leaderboard"></div>
+<h3>Add a score</h3>
+<div id="addScore">
+    Name: <input v-model="name"><br/>
+    Score: <input v-model="score"><br/>
+    Country: <input v-model="country"><br/>
+    <input type="button" value="Add" onclick="add()">
+</div>
+<h3>See scores</h3>
+<input type="button" value="All" onclick="all()">
+<input type="button" value="Top" onclick="top()">
+<input type="button" value="By player" onclick="player()">
+<input type="button" value="By country" onclick="country()"><br/>
+<div id="struct" style="display: none">
+    {{ message }}
+    <input v-model="field" class="hidden">
+</div><br/>
+<input type="button" value="Search" onclick="search()">
+<table id="leaderboard">
+    <tr><td>Rank</td><td>Name</td><td>Country</td><td>Score</td></tr>
+    <tr v-for="item in items">
+        <td>{{ item.rank }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.country }}</td>
+        <td>{{ item.score }}</td>
+    </tr>
+</table>
+<script>
+    var addScore = new Vue({
+        el: "#addScore",
+        data: {
+            name: null,
+            score: null,
+            country: null
+        },
+        methods: {
+            getName: function() {
+                return this.name;
+            },
+            getScore: function() {
+                return this.score;
+            },
+            getCountry: function() {
+                return this.country;
+            }
+        }
+    });
+
+    var leaderboard = new Vue({
+        el: '#leaderboard',
+        data: {
+            items: []
+        },
+        methods: {
+            resetItems: function () {
+                this.items = [];
+            },
+            addItem: function (value) {
+                this.items.push(value);
+            }
+        }
+    })
+
+    var struct = new Vue({
+        el: "#struct",
+        data: {
+            message: null,
+            field: null,
+            type: "all"
+        },
+        methods: {
+            setMessage: function (value) {
+                this.message = value;
+            },
+            setField: function (value) {
+                this.field = value;
+            },
+            setType: function (value) {
+                this.type = value;
+            },
+            getField: function () {
+                return this.field;
+            },
+            getType: function () {
+                return this.type;
+            }
+        }
+    });
+
+    function all() {
+        leaderboard.resetItems();
+        struct.setMessage(null);
+        document.getElementById("struct").style.display = "none";
+        struct.setType("all");
+    }
+
+    function top() {
+        leaderboard.resetItems();
+        struct.setMessage(null);
+        document.getElementById("struct").style.display = "none";
+        struct.setType("top");
+    }
+
+    function player() {
+        leaderboard.resetItems();
+        struct.setMessage("Enter a name") ;
+        document.getElementById("struct").style.display = "inline";
+        struct.setField(null);
+        struct.setType("player");
+    }
+
+    function country() {
+        leaderboard.resetItems();
+        struct.setMessage("Enter a country");
+        document.getElementById("struct").style.display = "inline";
+        struct.setField(null);
+        struct.setType("country");
+    }
+
+    function search() {
+        var url = "http://localhost:3000/leaderboard/"
+        var type = struct.getType();
+        switch (type) {
+            case "top":
+                url += "top"
+                break;
+            case "player":
+                url += "rank/" + struct.getField().toString();
+                break;
+            case "country":
+                url += "topcountry/" + struct.getField().toString();
+                break;
+            default:
+                url += "all";
+                break;
+        }
+        leaderboard.resetItems();
+        $.getJSON(url, function (datas) {
+            if (type == "player") {
+                datas = { standing: [datas] };
+            }
+            var size = datas["standing"].length
+            for (var i = 0; i < size; i++) {
+                leaderboard.addItem(datas["standing"][i]);
+            }
+        });
+    }
+
+    function add() {
+        $.post("/leaderboard/add/" + addScore.getName(), { score: addScore.getScore(), country: addScore.getCountry() });
+    }
+
+    window.onload = all;
+</script>
 </body>
 </html>

@@ -13,9 +13,12 @@ app.get('/', function(req, res) {
     res.render('index', { title: 'Leaderboard' });
 });
 
-// GET all scores
+/* GET all scores
+Status 500: unhandled error
+Status 200: OK
+ */
 app.get('/leaderboard/all', function (req, res) {
-    db.all("SELECT name, country, score FROM leaderboard ORDER BY score", function (err, rows) {
+    db.all("SELECT name, country, score FROM leaderboard ORDER BY score DESC", function (err, rows) {
         if (err) {
             res.status(500).send({ error: err });
         } else {
@@ -24,7 +27,10 @@ app.get('/leaderboard/all', function (req, res) {
     });
 });
 
-// GET the 3 best scores
+/* GET the 3 best scores
+Status 500: unhandled error
+Status 200: OK
+ */
 app.get('/leaderboard/top', function (req, res) {
     db.all("SELECT name, country, score FROM leaderboard ORDER BY score DESC LIMIT 3", function (err, rows) {
         if (err) {
@@ -35,7 +41,11 @@ app.get('/leaderboard/top', function (req, res) {
     });
 });
 
-// GET the best score of {playerName}
+/* GET the best score of {playerName}
+Status 500: unhandled error
+Status 404: Player not found
+Status 200: OK
+ */
 app.get('/leaderboard/rank/:playerName', function (req, res) {
     db.all("SELECT l1.name, l1.score, " +
         "(SELECT count() + 1 FROM (SELECT * FROM leaderboard l2 WHERE l2.score > l1.score)) rank, " +
@@ -47,12 +57,16 @@ app.get('/leaderboard/rank/:playerName', function (req, res) {
         } else if (rows.length == 0) {
             res.status(404).send("Player '" + req.params.playerName + "' not found.");
         } else {
-            res.status(200).send({ standing: rows });
+            res.status(200).send(rows[0]);
         }
     });
 });
 
-// GET the 3 best score from {country}
+/* GET the 3 best score from {country}
+Status 500: unhandled error
+Status 404: Country not found
+Status 200: OK
+ */
 app.get('/leaderboard/topcountry/:country', function (req, res) {
     db.all("SELECT name, score " +
         "FROM leaderboard WHERE country = '" + req.params.country + "' " +
@@ -68,15 +82,18 @@ app.get('/leaderboard/topcountry/:country', function (req, res) {
     });
 });
 
-/* Add a score in the leaderboard
- IF {playerName} doesn't have a score THEN
+/* POST a score in the leaderboard
+IF {playerName} doesn't have a score THEN
     add the score
- ELSE
-    IF {playerName} has a score THEN
+ELSE
+    IF {playerName} already has a score THEN
         IF {playerName} has a lower a score THEN
             add a new score
         ELSE
             doesn't add the score
+
+Status 500: unhandled error
+Status 200: OK
   */
 app.post('/leaderboard/add/:playerName', function (req, res) {
     var name = req.params.playerName;
