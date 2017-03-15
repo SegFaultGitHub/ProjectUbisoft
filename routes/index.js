@@ -97,10 +97,14 @@ Status 200: OK
   */
 app.post('/leaderboard/add/:playerName', function (req, res) {
     var name = req.params.playerName;
-    var score = req.body.score;
+    var score = Number(req.body.score);
     var country = req.body.country;
-    if (score < 0) {
-        res.status(500).send({ error: "score < 0" });
+    if (!name || !score || !country || !Number.isInteger(score) || score < 0) {
+        console.log("name: " + !name);
+        console.log("score: " + !score);
+        console.log("country: " + !country);
+        console.log("score number: " + !Number.isInteger(score));
+        res.status(500).send({ error: "incorrect score" });
     } else {
         var queryStr =
             "INSERT OR REPLACE\n" +

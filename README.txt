@@ -78,7 +78,6 @@ TESTS
 
 - In order to run some tests, simply type `npm test` in a terminal. Tests can be edited in test/test.js.
 - A website is also provided.
-  WARNING: /leaderboard/add/{playerName} route doesn't work as intended in the browser. When trying to add a new line with a lower score than before, it's added although it shouldn't be.
 
 
 SCALABITY
