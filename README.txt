@@ -77,7 +77,7 @@ TESTS
 -----
 
 - In order to run some tests, simply type `npm test` in a terminal. Tests can be edited in test/test.js.
-- A website is also provided.
+- A website is also provided: http://localhost:3000/
 
 
 SCALABITY
