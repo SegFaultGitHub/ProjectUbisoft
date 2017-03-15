@@ -4,9 +4,41 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+//
 var index = require('./routes/index');
 var users = require('./routes/users');
+
+// Database
+var sqlite = require('sqlite3').verbose();
+var db = new sqlite.Database('DB_leaderboard');
+
+db.serialize(function () {
+    db.run("DROP TABLE leaderboard");
+    db.run("CREATE TABLE IF NOT EXISTS leaderboard (" +
+        "name TEXT NOT NULL," +
+        "country TEXT NOT NULL," +
+        "score INT NOT NULL)");
+
+    var values = [
+        { name: "Thomas", country: "Réunion", score: 900 },
+        { name: "Thomas", country: "Réunion", score: 1300 },
+        { name: "Maxime", country: "France", score: 1300 },
+        { name: "Maxime", country: "France", score: 800},
+        { name: "Alex", country: "Laos", score: 300 },
+        { name: "Alex", country: "Laos", score: 1000 },
+        { name: "Roman", country: "France", score: 750 },
+        { name: "Roman", country: "France", score: 900 }
+    ];
+
+    var query = db.prepare("INSERT INTO leaderboard (name, country, score) VALUES (?, ?, ?)");
+    values.forEach(function (row) {
+        query.run(row.name, row.country, row.score, function(err) {
+            if (err) console.log(err);
+        });
+    });
+});
+
+// Database END
 
 var app = express();
 
@@ -42,7 +74,5 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
-
-console.log("Coucou");
 
 module.exports = app;
