@@ -29,12 +29,13 @@
 </div><br/>
 <input type="button" value="Search" onclick="search()">
 <table id="leaderboard">
-    <tr><td>Rank</td><td>Name</td><td>Country</td><td>Score</td></tr>
+    <tr><td>Rank</td><td>Name</td><td>Country</td><td>Score</td><td>Total</td></tr>
     <tr v-for="item in items">
         <td>{{ item.rank }}</td>
         <td>{{ item.name }}</td>
         <td>{{ item.country }}</td>
         <td>{{ item.score }}</td>
+        <td>{{ item.total }}</td>
     </tr>
 </table>
 <script>

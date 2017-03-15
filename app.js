@@ -19,7 +19,7 @@ db.serialize(function () {
         "name TEXT NOT NULL," +
         "country TEXT NOT NULL," +
         "score INT NOT NULL);");
-    // Indexing database to speed-up querys
+    // Indexing database to speed-up queries
     db.run("CREATE UNIQUE INDEX name_idx ON leaderboard(name);");
     db.run("CREATE INDEX country_idx ON leaderboard(country);");
 
@@ -31,6 +31,8 @@ db.serialize(function () {
         { name: "Wuattiroro", country: "France", score: 750 }
     ];
 
+    var countries = [ "France", "Laos", "USA", "Japan", "Germany", "England" ];
+
     var query = db.prepare("INSERT INTO leaderboard (id, name, country, score) VALUES (NULL, ?, ?, ?)");
     values.forEach(function (row) {
         query.run(row.name, row.country, row.score, function(err) {
@@ -38,7 +40,14 @@ db.serialize(function () {
         });
     });
 
-    // for (var i = 0; i < 10000000)
+    // Scalabity test
+    if (false) {
+        for (var i = 0; i < 100000; i++) {
+            query.run(Math.random().toString(), countries[Math.floor(Math.random() * countries.length)], Math.floor((Math.random() * 10000) + 500), function (err) {
+                if (err) console.log(err);
+            });
+        }
+    }
 });
 // Database END
 

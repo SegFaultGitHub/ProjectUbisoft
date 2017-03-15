@@ -1,4 +1,10 @@
-README
+ _____  ______          _____  __  __ ______
+|  __ \|  ____|   /\   |  __ \|  \/  |  ____|
+| |__) | |__     /  \  | |  | | \  / | |__
+|  _  /|  __|   / /\ \ | |  | | |\/| |  __|
+| | \ \| |____ / ____ \| |__| | |  | | |____
+|_|  \_\______/_/    \_\_____/|_|  |_|______|
+
 
 INTRODUCTION
 ------------
@@ -19,12 +25,14 @@ This project require the following packages:
 THE DATABASE
 ------------
 
-The database is simply composed of one table `leaderboard`.
+The database `DB_leaderboard` is simply composed of one table `leaderboard`.
 leaderboard
 ├ id        PRIMARY KEY NOT NULL
 ├ name      TEXT        NOT NULL
 ├ country   TEXT        NOT NULL
 └ score     INT         NOT NULL
+Unique index on name
+Index on country
 
 
 ROUTES
@@ -71,3 +79,4 @@ SCALABITY
 ---------
 
 In order to speed-up querys and researches, fields `name` and `country` has been indexed.
+Tests had been made with 100 000 lines, and performances weren't affected (queries took less than 100ms to be done).
