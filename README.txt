@@ -59,7 +59,7 @@ GET /leaderboard/topcountry/{country}: returns the 3 best score from {country}
     Status 500: unhandled error
     Status 404: country not found
     Status 200: OK
-POST /leaderboard/add/{playerName}: add a score in the leaderboard
+POST /leaderboard/add/{playerName}: adds a score in the leaderboard
     IF {playerName} doesn't have a score THEN
         add the score
     ELSE
@@ -75,7 +75,7 @@ POST /leaderboard/add/{playerName}: add a score in the leaderboard
 TESTS
 -----
 
-- In order to run some tests, simply type `npm test` in a terminal.
+- In order to run some tests, simply type `npm test` in a terminal. Tests can be edited in test/test.js.
 - A website is also provided.
   WARNING: /leaderboard/add/{playerName} route doesn't work as intended in the browser. When trying to add a new line with a lower score than before, it's added although it shouldn't be.
 
@@ -83,5 +83,5 @@ TESTS
 SCALABITY
 ---------
 
-In order to speed-up querys and researches, fields `name` and `country` has been indexed.
+In order to speed-up queries and researches, fields `name` and `country` has been indexed.
 Tests had been made with 100 000 lines, and performances weren't affected (queries took less than 100ms to be done).
