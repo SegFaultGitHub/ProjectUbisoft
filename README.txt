@@ -16,16 +16,17 @@ REQUIREMENTS
 ------------
 
 This project require the following packages:
-    - sqlite3:      npm install --save sqlite3
-    - mocha:        npm install --save-dev mocha
-    - supertest:    npm install --save-dev supertest
+    - sqlite3
+    - mocha
+    - supertest
     - vue.js:       available in public/javascripts
 
 
 HOW TO START
 ------------
 
-In a terminal, type `npm start`. Make sure your port 3000 isn't already in use.
+Install the depedencies: `npm install`.
+Start the server: `npm start`. Make sure your port 3000 isn't already in use.
 You can then test your request by using Postman or wget for example.
 
 
