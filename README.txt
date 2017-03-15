@@ -19,7 +19,14 @@ This project require the following packages:
     - sqlite3:      npm install --save sqlite3
     - mocha:        npm install --save-dev mocha
     - supertest:    npm install --save-dev supertest
-    - vue.js        available in public/javascripts
+    - vue.js:       available in public/javascripts
+
+
+HOW TO START
+------------
+
+In a terminal, type `npm start`. Make sure your port 3000 isn't already in use.
+You can then test your request by using Postman or wget for example.
 
 
 THE DATABASE
@@ -61,7 +68,6 @@ POST /leaderboard/add/{playerName}: add a score in the leaderboard
                 add a new score
             ELSE
                 doesn't add the score
-
     Status 500: unhandled error
     Status 200: OK
 
@@ -69,10 +75,9 @@ POST /leaderboard/add/{playerName}: add a score in the leaderboard
 TESTS
 -----
 
-- In order to run some tests, simply type npm test in a terminal.
+- In order to run some tests, simply type `npm test` in a terminal.
 - A website is also provided.
-  WARNING: /leaderboard/add/{playerName} route doesn't work as intended in the browser. When trying to add a new line
-  with lower score than before, it's added although it shouldn't be.
+  WARNING: /leaderboard/add/{playerName} route doesn't work as intended in the browser. When trying to add a new line with a lower score than before, it's added although it shouldn't be.
 
 
 SCALABITY
